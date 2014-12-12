@@ -3,8 +3,11 @@ package z_spark.mgr
 	import core.display.DisplayObject;
 	import core.display.DisplayObjectContainer;
 	import core.display.Stage;
+	import core.events.Event;
 	
+	import z_spark.StringDef;
 	import z_spark.structure_internal;
+	import z_spark.debug.SError;
 
 	CONFIG::STRUCTURE_DEBUG{
 		import z_spark.debug.Debugger;
@@ -29,7 +32,6 @@ package z_spark.mgr
 			public static const LAYER_DEBUG:int=100;
 		};
 		
-		
 		private var _topLayer:DisplayObjectContainer=new DisplayObjectContainer();
 		private var _uiLayer:DisplayObjectContainer=new DisplayObjectContainer();
 		private var _fightLayer:DisplayObjectContainer=new DisplayObjectContainer();
@@ -37,8 +39,7 @@ package z_spark.mgr
 		
 		CONFIG::STRUCTURE_DEBUG{
 			private var _debugLayer:DisplayObjectContainer=new DisplayObjectContainer();
-		}
-		
+		};
 		
 		public function LayerManager()
 		{
@@ -55,7 +56,6 @@ package z_spark.mgr
 			CONFIG::STRUCTURE_DEBUG{
 				stage.addChild(_debugLayer);
 			};
-			
 			
 			instance=this;
 		}
@@ -150,6 +150,50 @@ package z_spark.mgr
 			}
 		}
 		
+		private var _enterframeMap:Array;
+		public function startGlobalEnterFrame():void{
+			if(_bottomLayer.hasEventListener(Event.ENTER_FRAME)){
+				CONFIG::STRICT_DEBUG{
+					throw SError(StringDef.ERROR_GLOBAL_ALREADY_START);
+				};
+				return;
+			}
+			_enterframeMap=[];
+			_bottomLayer.addEventListener(Event.ENTER_FRAME,onGlobalEnterHandler);
+		}
+		
+		public function stopGlobalEnterFrame():void{
+			if(_bottomLayer.hasEventListener(Event.ENTER_FRAME)){
+				_bottomLayer.removeEventListener(Event.ENTER_FRAME,onGlobalEnterHandler);
+				return;
+			}
+			CONFIG::STRICT_DEBUG{
+				throw SError(StringDef.ERROR_GLOBAL_ALREADY_STOP);
+			};
+		}
+		
+		public function destoryGlobalEnterFrame():void{
+			_enterframeMap=null;
+			_bottomLayer.removeEventListener(Event.ENTER_FRAME,onGlobalEnterHandler);
+		}
+		
+		public function addEnterframeCall(fn:Function,space:uint=1):void{
+			
+		}
+		
+		private function onGlobalEnterHandler(evt:Event):void
+		{
+			
+		}
+		
+		
+	}
+}
+
+class EnterframeSeed{
+	public var space:uint=1;
+	public var fn:Function ;
+	public function EnterframeSeed(fn:Function ,space:uint=1){
 		
 	}
 }

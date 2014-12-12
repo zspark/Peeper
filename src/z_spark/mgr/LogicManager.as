@@ -85,7 +85,7 @@ package z_spark.mgr
 			}
 			if(wndSeed.wndExist){
 				var tmp:BaseLogic=removeLogic(wndSeed.logicName);
-				tmp.destory();
+				tmp.destruct();
 				wndSeed.wndExist=false;
 				return true;
 			}

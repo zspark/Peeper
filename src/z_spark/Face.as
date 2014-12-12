@@ -40,6 +40,12 @@ package z_spark
 			return _conn;
 		}
 
+		/**
+		 * 指定具体协议包头的解析类，从而连通应用层与框架层的网络数据； 
+		 * 『重要的接口』
+		 * @param value
+		 * 
+		 */
 		public function set packetParser(value:IPacketParser):void{
 			_conn.packetParser=value;
 			_proxyManager.updatePacketParser(value);

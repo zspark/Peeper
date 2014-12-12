@@ -5,6 +5,9 @@ package z_spark.core
 	};
 	/**
 	 * 游戏具体业务逻辑的承载者；
+	 * 若要划分复杂的庞大的逻辑为几个不同的子逻辑的话，可以考虑让主逻辑持有所有
+	 * 子逻辑的引用，采用委托设计模式处理下；如果这种需求庞大并且在具体实践中证明
+	 * 比较合理且必要的话，框架会考虑支持；
 	 * @author z_Spark
 	 * @since 2014/12/02
 	 * 
@@ -29,7 +32,7 @@ package z_spark.core
 		public function closeView(eft:Boolean=false):void{
 		}
 		
-		public function destory():void
+		public function destruct():void
 		{
 			CONFIG::STRUCTURE_DEBUG{
 				Debugger.info("BaseLogic::destory()");

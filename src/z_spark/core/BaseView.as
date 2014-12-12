@@ -13,6 +13,11 @@ package z_spark.core
 	 */
 	public class BaseView extends DisplayObjectContainer
 	{
+		/**
+		 * 客户端程序员根据需要在view中临时保存的自定义数据； 
+		 * 注意在destruct的时候=null；
+		 */
+		public var customValue:Object;
 		public function BaseView()
 		{
 			super();
@@ -39,25 +44,12 @@ package z_spark.core
 		public function refreshDynamicUI(asyncData:Object,fnCb:Function=null):void{}
 		
 		/**
-		 * 播放ui特效；
-		 * 可以是序列帧的，也可以是程序动画； 
-		 * 
-		 */
-		public function playEffect():void{}
-		
-		/**
-		 * 停止UI特效播放； 
-		 * 
-		 */
-		public function stopEffect():void{}
-		
-		/**
 		 * 销毁UI，主要用来清除Image等对象的内存占用；
 		 * 其他诸如removeChild、=null等操作就不要在该接口中实现了；
 		 * 免得冗余/过度的内存释放造成性能的下降； 
 		 * 
 		 */
-		public function destoryView():void{}
+		public function destruct():void{}
 		
 		protected function setPos(obj:DisplayObject,xx:int=0,yy:int=0):void{
 			obj.x=xx;
@@ -68,12 +60,6 @@ package z_spark.core
 			addChild(obj);
 			obj.x=xx;
 			obj.y=yy;
-		}
-		
-		protected function removeAllChildren():void{
-			for (var i:int=numChildren-1;i<0;i--){
-				removeChildAt(i);
-			}
 		}
 	}
 }

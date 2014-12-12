@@ -1,13 +1,20 @@
 package z_spark.debug
 {
+	import flash.utils.Dictionary;
+	
 	import core.filesystem.File;
+	import core.utils.WeakDictionary;
+	
+	import z_spark.structure_internal;
+	import z_spark.core.BaseProxy;
+	import z_spark.net.ProtocolCodeController;
 
+	use namespace structure_internal;
 	public class Debugger
 	{
 		public static const COUT_INFO:int=2;
 		public static const COUT_ERROR:int=4;
 		public static const COUT_FAULT:int=6;
-		
 		
 		private static var _coutMode:int;
 		private static var _isTrace:Boolean;
@@ -49,6 +56,24 @@ package z_spark.debug
 				trace(str);
 			if(_isWriteToDisk)
 				File.write(_fileName,str);
+		}
+		
+		public static function printPCCInfo():void{
+			var result:String='[ProtocolCodeController debug info:]\n';
+			var dic:Dictionary=ProtocolCodeController.instance.pccDataDic;
+			for (var sysid:int in dic){
+				result+="├ systemId: "+sysid+' :\n';
+				var wdic:WeakDictionary=dic[sysid] as WeakDictionary;
+				for (var moduleid:int in wdic){
+					result+="│\t├ moduleId: "+moduleid+" ─> "+BaseProxy(wdic[moduleid]).toString()+"\n";
+					var fnDic:Dictionary=BaseProxy(wdic[moduleid]).idToFnDic;
+					for (var fnId:int in fnDic){
+						result+="│\t│\t├ fnId: "+fnId+" ─> "+fnDic[fnId].toString()+"\n";
+					}
+				}
+			}
+			result+="├ end\n";
+			cout(result);
 		}
 		
 	}

@@ -31,6 +31,11 @@ package z_spark.core
 			_idToFnDic=new Dictionary();
 		}
 		
+		structure_internal function get idToFnDic():Dictionary
+		{
+			return _idToFnDic;
+		}
+
 		structure_internal function set packetParser(value:IPacketParser):void{
 			_packetParser=value;
 		}
@@ -56,5 +61,9 @@ package z_spark.core
 			_packetParser.encode(_systemId,_moduleId,fnId,data);
 		}
 		
+		public function toString():String
+		{
+			return "/null,printed from BaseProxy::toString()/";
+		}
 	}
 }
